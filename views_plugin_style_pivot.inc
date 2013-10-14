@@ -18,6 +18,8 @@ class views_plugin_style_pivot extends views_plugin_style_table {
   function option_definition() {
     $options = parent::option_definition();
 
+    $options['pivot_col'] = array('default' => array());
+    $options['pivot_row'] = array('default' => array());
     $options['pivot_mode_multi_values'] = array('default' => VIEWS_PIVOT_MODE_MULTI_VALUE_HORICONTAL);
     return $options;
   }
