@@ -229,7 +229,6 @@ function template_preprocess_views_view_pivot_table(&$vars) {
       $vars['header_attributes'][$field]['colspan'] = $c;
     }
   }
-  ksort($vars['header']);
 }
 
 function _views_pivot_add_field_classes(&$vars, $fields, $num, $row_key, $field) {
