@@ -14,7 +14,7 @@ function views_pivot_views_plugins() {
     'style' => array(
       'views_pivot' => array(
         'title' => t('Pivot'),
-        'help' => t('Displays ros as a pivot table.'),
+        'help' => t('Displays rows as a pivot table.'),
         'handler' => 'views_plugin_style_pivot',
         'path' => drupal_get_path('module', 'views_pivot'),
         'theme' => 'views_view_pivot_table',

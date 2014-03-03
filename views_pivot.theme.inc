@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Callback to prepare row data for later rendering.
+ *
+ * @param $vars
+ */
 function template_preprocess_views_view_pivot_table(&$vars) {
   $view     = $vars['view'];
 
@@ -37,7 +42,6 @@ function template_preprocess_views_view_pivot_table(&$vars) {
       }
     }
   }
-
 
   $query    = tablesort_get_query_parameters();
   if (isset($view->exposed_raw_input)) {
@@ -152,22 +156,6 @@ function template_preprocess_views_view_pivot_table(&$vars) {
       }
       _views_pivot_add_field_to_row($vars, $options, $renders, $fields, $num, $renders[$num][$pivot_row], $field, $col);
     }
-
-    // Remove columns if the option is hide empty column is checked and the field is not empty.
-    /*
-    if (!empty($options['info'][$field]['empty_column'])) {
-      $empty = TRUE;
-      foreach ($vars['rows'] as $num => $columns) {
-        $empty &= empty($columns[$column]);
-      }
-      if ($empty) {
-        foreach ($vars['rows'] as $num => &$column_items) {
-          unset($column_items[$column]);
-          unset($vars['header'][$column]);
-        }
-      }
-    }
-    */
   }
 
   foreach ($vars['rows'][VIEWS_PIVOT_HEADER_KEY] as $key => $value) {
@@ -222,7 +210,7 @@ function template_preprocess_views_view_pivot_table(&$vars) {
     unset($vars['header'][$field]);
   }
 
-  // Do this for horicontal multi field setting only.
+  // Do this for horizontal multi field setting only.
   $c = count($vars['subheader']);
   if (!$vertical && $c > 1) {
     foreach ($vars['header'] as $field) {
@@ -231,6 +219,17 @@ function template_preprocess_views_view_pivot_table(&$vars) {
   }
 }
 
+/**
+ * Helper function to add field classes, called by _views_pivot_add_field_to_row
+ *
+ * @param $vars
+ * @param $fields
+ * @param $num
+ * @param $row_key
+ * @param $field
+ *
+ * @see _views_pivot_add_field_to_row
+ */
 function _views_pivot_add_field_classes(&$vars, $fields, $num, $row_key, $field) {
   // Add field classes
   $vars['field_classes'][$field][$row_key] = '';
@@ -247,6 +246,22 @@ function _views_pivot_add_field_classes(&$vars, $fields, $num, $row_key, $field)
   $vars['field_attributes'][$field][$row_key] = array();
 }
 
+/**
+ * Helper function to add a field to a table row, called by
+ * template_preprocess_views_view_pivot_table
+ *
+ * @param $vars
+ * @param $options
+ * @param $renders
+ * @param $fields
+ * @param $num
+ * @param $row_key
+ * @param $field
+ * @param $column
+ * @param bool $append
+ *
+ * @see template_preprocess_views_view_pivot_table
+ */
 function _views_pivot_add_field_to_row(&$vars, $options, $renders, $fields, $num, $row_key, $field, $column, $append = TRUE) {
   if (!isset($fields[$field])) {
     // Maybe no fields defined yet.
@@ -287,6 +302,9 @@ function _views_pivot_add_field_to_row(&$vars, $options, $renders, $fields, $num
 
 /**
  * Theme the form for the pivot table style plugin
+ *
+ * @param $variables
+ * @return string
  */
 function theme_views_ui_style_plugin_pivot($variables) {
   $form = $variables['form'];
