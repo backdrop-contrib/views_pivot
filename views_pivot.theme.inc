@@ -31,7 +31,7 @@ function template_preprocess_views_view_pivot_table(&$vars) {
 
   $pivot_extra = array();
   foreach ($columns as $field => $column) {
-    if ($options['info'][$field]['pivot_row_extra']) {
+    if (!empty($options['info'][$field]['pivot_row_extra'])) {
       if ($column != $pivot_col && $column != $pivot_row) {
         $pivot_extra[] = $column;
       }
