@@ -17,6 +17,7 @@ function template_preprocess_views_view_pivot_table(&$vars) {
   $vars['rows'] = array();
   $vars['field_classes'] = array();
   $vars['header'] = array();
+  $vars['hide_subheader'] = TRUE;
 
   $options  = $view->style_plugin->options;
   $handler  = $view->style_plugin;
@@ -166,6 +167,11 @@ function template_preprocess_views_view_pivot_table(&$vars) {
   // Hide table header if all labels are empty.
   if (!array_filter($vars['header'])) {
     $vars['header'] = array();
+  }
+
+  // Show table subheader if labels are not empty.
+  if (array_filter($vars['subheader'])) {
+    $vars['hide_subheader'] = FALSE;
   }
 
   $count = 0;

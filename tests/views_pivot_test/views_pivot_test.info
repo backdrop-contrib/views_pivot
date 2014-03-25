@@ -1,0 +1,6 @@
+name = Views Pivot Test Data
+description = Provides testing for Views Pivot
+core = 7.x
+dependencies[] = views_pivot
+dependencies[] = text
+dependencies[] = list

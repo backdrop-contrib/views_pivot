@@ -37,7 +37,7 @@
     </th>
     <?php endforeach; ?>
   </tr>
-  <?php if (!empty($subheader)) : ?>
+  <?php if (!$hide_subheader) : ?>
   <tr>
     <?php foreach ($header as $field => $label): ?>
     <?php foreach ($subheader as $field => $label): ?>
