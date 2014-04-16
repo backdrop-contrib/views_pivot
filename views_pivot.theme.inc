@@ -209,20 +209,30 @@ function template_preprocess_views_view_pivot_table(&$vars) {
     $vars['attributes_array'] = array('summary' => $handler->options['summary']);
   }
 
+  $c = count($vars['subheader']);
+  $row_span_extra_header = $vars['hide_subheader'] ? 1 : ($vertical ? ($c + 1) : 2);
   array_unshift($pivot_extra, $pivot_row);
   foreach ($pivot_extra as $field) {
-    $vars['header_attributes'][$field]['rowspan'] = 2;
+    $vars['header_attributes'][$field]['rowspan'] = $row_span_extra_header;
     $vars['pivot_rows'][$field] = $vars['header'][$field];
     unset($vars['header'][$field]);
   }
 
   // Do this for horizontal multi field setting only.
-  $c = count($vars['subheader']);
-  if (!$vertical && $c > 1) {
-    foreach ($vars['header'] as $field) {
-      $vars['header_attributes'][$field]['colspan'] = $c;
+  if ($c > 0) {
+    if ($vertical) {
+      foreach ($vars['rows'] as $key => $values) {
+        $vars['row_attributes'][$key]['rowspan'] = $c;
+      }
+    }
+    else {
+      foreach ($vars['header'] as $field) {
+        $vars['header_attributes'][$field]['colspan'] = $c;
+      }
     }
   }
+
+  $vars['vertical'] = $vertical;
 }
 
 /**

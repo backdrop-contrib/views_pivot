@@ -78,7 +78,7 @@ class views_plugin_style_pivot extends views_plugin_style_table {
       '#type' => 'radios',
       '#title' => t('Arrange multiple values'),
       '#options' => array(
-        VIEWS_PIVOT_MODE_MULTI_VALUE_HORICONTAL => t('horicontally'),
+        VIEWS_PIVOT_MODE_MULTI_VALUE_HORICONTAL => t('horizontally'),
         VIEWS_PIVOT_MODE_MULTI_VALUE_VERTICAL => t('vertically'),
       ),
       '#default_value' => $this->options['pivot_mode_multi_values'],
