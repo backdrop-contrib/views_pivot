@@ -5,7 +5,7 @@
  * Holds views_plugin_style_chart class which implements the chart plugin.
  */
 
-define('VIEWS_PIVOT_MODE_MULTI_VALUE_HORICONTAL', 0);
+define('VIEWS_PIVOT_MODE_MULTI_VALUE_HORIZONTAL', 0);
 define('VIEWS_PIVOT_MODE_MULTI_VALUE_VERTICAL', 1);
 
 define('VIEWS_PIVOT_HEADER_KEY', 'views_key_header');
@@ -20,7 +20,7 @@ class views_plugin_style_pivot extends views_plugin_style_table {
 
     $options['pivot_col'] = array('default' => array());
     $options['pivot_row'] = array('default' => array());
-    $options['pivot_mode_multi_values'] = array('default' => VIEWS_PIVOT_MODE_MULTI_VALUE_HORICONTAL);
+    $options['pivot_mode_multi_values'] = array('default' => VIEWS_PIVOT_MODE_MULTI_VALUE_HORIZONTAL);
     return $options;
   }
 
@@ -78,7 +78,7 @@ class views_plugin_style_pivot extends views_plugin_style_table {
       '#type' => 'radios',
       '#title' => t('Arrange multiple values'),
       '#options' => array(
-        VIEWS_PIVOT_MODE_MULTI_VALUE_HORICONTAL => t('horizontally'),
+        VIEWS_PIVOT_MODE_MULTI_VALUE_HORIZONTAL => t('horizontally'),
         VIEWS_PIVOT_MODE_MULTI_VALUE_VERTICAL => t('vertically'),
       ),
       '#default_value' => $this->options['pivot_mode_multi_values'],
