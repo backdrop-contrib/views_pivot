@@ -33,11 +33,12 @@ class views_plugin_style_pivot extends views_plugin_style_table {
     $columns = $this->sanitize_columns($this->options['columns']);
     $form['#theme'] = 'views_ui_style_plugin_pivot';
 
+    $column_keys = array_keys($columns);
     $default_pivot_col = empty($this->options['pivot_col']) ?
-      array_pop(array_keys($columns)) :
+      array_pop($column_keys) :
       $this->options['pivot_col'];
     $default_pivot_row = empty($this->options['pivot_row']) ?
-      array_shift(array_keys($columns)) :
+      array_shift($column_keys) :
       $this->options['pivot_row'];
 
     foreach ($columns as $field => $column) {
