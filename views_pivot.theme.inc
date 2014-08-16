@@ -54,8 +54,8 @@ function template_preprocess_views_view_pivot_table(&$vars) {
   $renders = $handler->render_fields($result);
 
   foreach ($result as $num => $row) {
-    _views_pivot_add_field_to_row($vars, $options, $renders, $fields, $num, VIEWS_PIVOT_HEADER_KEY, $pivot_col, $renders[$num][$pivot_col], FALSE);
-    _views_pivot_add_field_to_row($vars, $options, $renders, $fields, $num, $renders[$num][$pivot_row], $pivot_row, $columns[$pivot_row], FALSE);
+    _views_pivot_add_field_to_row($vars, $options, $renders, $fields, $num, VIEWS_PIVOT_HEADER_KEY, $pivot_col, $renders[$num][$pivot_col], $renders[$num][$pivot_col], FALSE);
+    _views_pivot_add_field_to_row($vars, $options, $renders, $fields, $num, $renders[$num][$pivot_row], $pivot_row, $columns[$pivot_row], $columns[$pivot_row], FALSE);
   }
   foreach ($columns as $field => $column) {
     // Create a second variable so we can easily find what fields we have and what the
@@ -147,15 +147,15 @@ function template_preprocess_views_view_pivot_table(&$vars) {
     foreach ($result as $num => $row) {
       if (($column == $pivot_row) || ($column == $pivot_col)) {
         // OK, we will append to one of those columns.
-        $col = $column;
+        $column_key = $column;
       }
       else if (in_array($column, $pivot_extra)) {
-        $col = $column;
+        $column_key = $column;
       }
       else {
-        $col = $column . ':' . $renders[$num][$pivot_col];
+        $column_key = $column . ':' . $renders[$num][$pivot_col];
       }
-      _views_pivot_add_field_to_row($vars, $options, $renders, $fields, $num, $renders[$num][$pivot_row], $field, $col);
+      _views_pivot_add_field_to_row($vars, $options, $renders, $fields, $num, $renders[$num][$pivot_row], $field, $column_key, $column);
     }
   }
 
@@ -273,12 +273,13 @@ function _views_pivot_add_field_classes(&$vars, $fields, $num, $row_key, $field)
  * @param $num
  * @param $row_key
  * @param $field
+ * @param $column_key
  * @param $column
  * @param bool $append
  *
  * @see template_preprocess_views_view_pivot_table
  */
-function _views_pivot_add_field_to_row(&$vars, $options, $renders, $fields, $num, $row_key, $field, $column, $append = TRUE) {
+function _views_pivot_add_field_to_row(&$vars, $options, $renders, $fields, $num, $row_key, $field, $column_key, $column, $append = TRUE) {
   if (!isset($fields[$field])) {
     // Maybe no fields defined yet.
     return;
@@ -294,25 +295,25 @@ function _views_pivot_add_field_to_row(&$vars, $options, $renders, $fields, $num
     }
 
     // Don't bother with separators and stuff if the field does not show up.
-    if (empty($field_output) && !empty($vars['rows'][$row_key][$column])) {
+    if (empty($field_output) && !empty($vars['rows'][$row_key][$column_key])) {
       return;
     }
 
     // Place the field into the column, along with an optional separator.
-    if ($append && !empty($vars['rows'][$row_key][$column])) {
-      if (strrpos($vars['rows'][$row_key][$column], $field_output) !== FALSE) {
+    if ($append && !empty($vars['rows'][$row_key][$column_key])) {
+      if (strrpos($vars['rows'][$row_key][$column_key], $field_output) !== FALSE) {
         // Ignore it as we seem to have added that already
         return;
       }
       if (!empty($options['info'][$column]['separator'])) {
-        $vars['rows'][$row_key][$column] .= filter_xss_admin($options['info'][$column]['separator']);
+        $vars['rows'][$row_key][$column_key] .= filter_xss_admin($options['info'][$column]['separator']);
       }
     }
     else {
-      $vars['rows'][$row_key][$column] = '';
+      $vars['rows'][$row_key][$column_key] = '';
     }
 
-    $vars['rows'][$row_key][$column] .= $field_output;
+    $vars['rows'][$row_key][$column_key] .= $field_output;
   }
 }
 
