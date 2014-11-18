@@ -82,12 +82,16 @@
       <?php endforeach; ?>
     <?php else : ?>
       <?php foreach ($header as $hkey => $label): ?>
-        <?php foreach ($subheader as $shkey => $label): ?>
-          <?php $key = $shkey . ':' . $hkey; ?>
-          <td <?php if (!empty($field_classes[$shkey][$row_key])) { print 'class="'. $field_classes[$shkey][$row_key] . '" '; } if (!empty($field_attributes[$shkey][$row_key])) { print drupal_attributes($field_attributes[$shkey][$row_key]);} ?>>
-            <?php print empty($row[$key]) ? '' : $row[$key]; ?>
-          </td>
-        <?php endforeach; ?>
+        <?php if (!empty($aggregate_columns[$hkey])): ?>
+          <td><?php print empty($row[$hkey]) ? '' : $row[$hkey]; ?></td>
+        <?php else : ?>
+          <?php foreach ($subheader as $shkey => $label): ?>
+            <?php $key = $shkey . ':' . $hkey; ?>
+            <td <?php if (!empty($field_classes[$shkey][$row_key])) { print 'class="'. $field_classes[$shkey][$row_key] . '" '; } if (!empty($field_attributes[$shkey][$row_key])) { print drupal_attributes($field_attributes[$shkey][$row_key]);} ?>>
+              <?php print empty($row[$key]) ? '' : $row[$key]; ?>
+            </td>
+          <?php endforeach; ?>
+        <?php endif; ?>
       <?php endforeach; ?>
     <?php endif; ?>
     </tr>

@@ -41,6 +41,11 @@ class views_plugin_style_pivot extends views_plugin_style_table {
       array_shift($column_keys) :
       $this->options['pivot_row'];
 
+    $aggregates = array(
+      '0' => '-' . t('none') . '-',
+      'sum' => t('sum'),
+    );
+
     foreach ($columns as $field => $column) {
       $safe = str_replace(array('][', '_', ' '), '-', $field);
       // the $id of the column for dependency checking.
@@ -72,6 +77,46 @@ class views_plugin_style_pivot extends views_plugin_style_table {
         '#default_value' => $default_pivot_col,
         '#dependency' => array($id => array($field)),
         '#required' => TRUE,
+      );
+      $form['info'][$field]['pivot_row_aggregate'] = array(
+        '#type' => 'select',
+        '#default_value' => empty($this->options['info'][$field]['pivot_row_aggregate']) ? 0 : $this->options['info'][$field]['pivot_row_aggregate'],
+        '#options' => $aggregates,
+        '#dependency' => array($id => array($field)),
+      );
+      $form['info'][$field]['pivot_row_aggregate_label'] = array(
+        '#type' => 'textfield',
+        '#size' => 15,
+        '#default_value' => empty($this->options['info'][$field]['pivot_row_aggregate_label']) ? '' : $this->options['info'][$field]['pivot_row_aggregate_label'],
+        '#dependency' => array($id => array($field)),
+        '#states' => array(
+          'invisible' => array(
+            ':input[name="style_options[info][' . $field . '][pivot_row_aggregate]"]' => array('value' => '0'),
+          ),
+        ),
+        '#attributes' => array(
+          'placeholder' => t('Label'),
+        ),
+      );
+      $form['info'][$field]['pivot_col_aggregate'] = array(
+        '#type' => 'select',
+        '#default_value' => empty($this->options['info'][$field]['pivot_col_aggregate']) ? 0 : $this->options['info'][$field]['pivot_col_aggregate'],
+        '#options' => $aggregates,
+        '#dependency' => array($id => array($field)),
+      );
+      $form['info'][$field]['pivot_col_aggregate_label'] = array(
+        '#type' => 'textfield',
+        '#size' => 15,
+        '#default_value' => empty($this->options['info'][$field]['pivot_col_aggregate_label']) ? '' : $this->options['info'][$field]['pivot_col_aggregate_label'],
+        '#dependency' => array($id => array($field)),
+        '#states' => array(
+          'invisible' => array(
+            ':input[name="style_options[info][' . $field . '][pivot_col_aggregate]"]' => array('value' => '0'),
+          ),
+        ),
+        '#attributes' => array(
+          'placeholder' => t('Label'),
+        ),
       );
     }
 
