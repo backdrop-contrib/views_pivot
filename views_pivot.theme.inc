@@ -182,7 +182,7 @@ function template_preprocess_views_view_pivot_table(&$vars) {
         $agg_key = 'agg:' . $column_key;
         $vars['rows'][VIEWS_PIVOT_HEADER_KEY][$agg_key] = $options['info'][$column_key]['pivot_row_aggregate_label'];
         $vars['aggregate_columns'][$agg_key] = TRUE;
-        $renders[$agg_key][$column_key] = _views_pivot_format_field($view, $fields, $column_key, $values, 'sum');
+        $renders[$agg_key][$column_key] = _views_pivot_format_aggregate_field($view, $fields, $column_key, $values, $options['info'][$column_key]['pivot_row_aggregate']);
         _views_pivot_add_field_to_row($vars, $options, $renders, $fields, $agg_key, $row_key, $column_key, $agg_key, '');
       }
     }
@@ -197,7 +197,7 @@ function template_preprocess_views_view_pivot_table(&$vars) {
       $renders[$row_key][$field] = $options['info'][$field]['pivot_col_aggregate_label'];
       _views_pivot_add_field_to_row($vars, $options, $renders, $fields, $row_key, $row_key, $field, $pivot_row, '');
 
-      $renders[$row_key][$field] = _views_pivot_format_field($view, $fields, $field, $values, 'sum');
+      $renders[$row_key][$field] = _views_pivot_format_aggregate_field($view, $fields, $field, $values, $options['info'][$field]['pivot_col_aggregate']);
       _views_pivot_add_field_to_row($vars, $options, $renders, $fields, $row_key, $row_key, $field, $column_key, '');
     }
   }
@@ -286,10 +286,44 @@ function template_preprocess_views_view_pivot_table(&$vars) {
  * @param $mode
  * @return mixed
  */
-function _views_pivot_format_field($view, $fields, $field, $values, $mode) {
+function _views_pivot_format_aggregate_field($view, $fields, $field, $values, $mode) {
   /* @var $field_handler views_handler_field_field */
   $field_handler = $fields[$field];
-  $value = array_sum($values);
+  $value = '';
+  switch ($mode) {
+    case 'sum':
+      $value = array_sum($values);
+      break;
+
+    case 'avg':
+      $sum = 0.0;
+      $count = 0;
+      foreach ($values as $value) {
+        // Do not count empty or non-numeric cells.
+        // Strip out any spaces and thousand makers.
+        $stripped = str_replace(array(' ', ','), '', $value);
+        $value = preg_match('/[-+]?\d*\.?\d+/', $stripped, $matches) ? (double)$matches[0] : FALSE;
+        if ($value !== FALSE) {
+          $sum += $value;
+          $count++;
+        }
+      }
+      $value = ($count == 0) ? 0.0 : $sum / $count;
+      break;
+
+    case 'count':
+      $value = count($values);
+      break;
+
+    case 'max':
+      $value = max($values);
+      break;
+
+    case 'min':
+      $value = min($values);
+      break;
+
+  }
   $row = $view->result[0];
   $alias = $field_handler->aliases[$field_handler->real_field];
   $row->{$alias} = $value;

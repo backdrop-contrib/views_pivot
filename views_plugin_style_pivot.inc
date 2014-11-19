@@ -43,7 +43,11 @@ class views_plugin_style_pivot extends views_plugin_style_table {
 
     $aggregates = array(
       '0' => '-' . t('none') . '-',
-      'sum' => t('sum'),
+      'sum' => t('sum of values'),
+      'avg' => t('average of values'),
+      'count' => t('number of values'),
+      'min' => t('minimum value'),
+      'max' => t('maximum value'),
     );
 
     foreach ($columns as $field => $column) {
