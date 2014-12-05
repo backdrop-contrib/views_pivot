@@ -312,7 +312,8 @@ function _views_pivot_format_aggregate_field($view, $fields, $field, $values, $m
       break;
 
     case 'count':
-      $value = count($values);
+      // Counting most likely doesn't require the rendering like the field.
+      return count($values);
       break;
 
     case 'max':
@@ -324,11 +325,38 @@ function _views_pivot_format_aggregate_field($view, $fields, $field, $values, $m
       break;
 
   }
-  $row = $view->result[0];
   $alias = $field_handler->aliases[$field_handler->real_field];
-  $row->{$alias} = $value;
-  $rendered = $field_handler->set_items($row, 0);
-  return $rendered[0]['rendered']['#markup'];
+
+  // Let's "compile" an aggregate that has all the fields with their aliases with an empty value.
+  static $aggregate;
+  if (!isset($aggregate)) {
+    $field_data = NULL;
+    $names = array();
+    foreach ($view->result as $result) {
+      $names += array_keys((array) $result);
+      if (!isset($field_data) && isset($result->_field_data)) {
+        $field_data = $result->_field_data;
+      }
+    }
+    $aggregate = new stdClass();
+    foreach ($names as $name) {
+      $aggregate->{$name} = '';
+    }
+    $aggregate->_field_data = $field_data;
+  }
+
+  $aggregate->{$alias} = $value;
+
+  if (method_exists($field_handler, 'set_items')) {
+    $rendered = $field_handler->set_items($aggregate, 0);
+    return $rendered[0]['rendered']['#markup'];
+  }
+
+  if (method_exists($field_handler, 'render')) {
+    return $field_handler->render($aggregate);
+  }
+
+  return $value;
 }
 
 /**
