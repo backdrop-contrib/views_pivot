@@ -165,11 +165,23 @@ function template_preprocess_views_view_pivot_table(&$vars) {
 
       // Handle the Pivot aggregates
       $full_field_name = 'field_' . $field;
+      if (isset($view->result[$num]->{$full_field_name})) {
+        if (is_array($view->result[$num]->{$full_field_name})) {
+          $value = $view->result[$num]->{$full_field_name}[0]['raw']['value'];
+        }
+        else {
+          $value = $view->result[$num]->{$full_field_name};
+        }
+      }
+      else {
+        $value = $view->result[$num]->{$field};
+      }
+
       if (!empty($options['info'][$field]['pivot_row_aggregate'])) {
-        $aggregates['row'][$row_key][$field][] = $view->result[$num]->{$full_field_name}[0]['raw']['value'];
+        $aggregates['row'][$row_key][$field][] = $value;
       }
       if (!empty($options['info'][$field]['pivot_col_aggregate'])) {
-        $aggregates['col'][$column_key][] = $view->result[$num]->{$full_field_name}[0]['raw']['value'];
+        $aggregates['col'][$column_key][] = $value;
       }
 
       _views_pivot_add_field_to_row($vars, $options, $renders, $fields, $num, $row_key, $field, $column_key, $column);
@@ -325,7 +337,7 @@ function _views_pivot_format_aggregate_field($view, $fields, $field, $values, $m
       break;
 
   }
-  $alias = $field_handler->aliases[$field_handler->real_field];
+  $alias = empty($field_handler->aliases[$field_handler->real_field]) ? $field_handler->real_field : $field_handler->aliases[$field_handler->real_field];
 
   // Let's "compile" an aggregate that has all the fields with their aliases with an empty value.
   static $aggregate;
