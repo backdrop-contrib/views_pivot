@@ -214,10 +214,12 @@ function template_preprocess_views_view_pivot_table(&$vars) {
     }
   }
 
-  foreach ($vars['rows'][VIEWS_PIVOT_HEADER_KEY] as $key => $value) {
-    $vars['header'][$key] = $value;
+  if (!empty($vars['rows'][VIEWS_PIVOT_HEADER_KEY]) ) {
+    foreach ($vars['rows'][VIEWS_PIVOT_HEADER_KEY] as $key => $value) {
+      $vars['header'][$key] = $value;
+    }
+    unset($vars['rows'][VIEWS_PIVOT_HEADER_KEY]);
   }
-  unset($vars['rows'][VIEWS_PIVOT_HEADER_KEY]);
 
   // Hide table header if all labels are empty.
   if (!array_filter($vars['header'])) {
