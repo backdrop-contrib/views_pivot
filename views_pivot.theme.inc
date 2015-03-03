@@ -165,6 +165,7 @@ function template_preprocess_views_view_pivot_table(&$vars) {
 
       // Handle the Pivot aggregates
       $full_field_name = 'field_' . $field;
+      $full_field_alias = isset($field_handler->field_alias) ? $field_handler->field_alias : FALSE;
       if (isset($view->result[$num]->{$full_field_name})) {
         if (is_array($view->result[$num]->{$full_field_name})) {
           $value = $view->result[$num]->{$full_field_name}[0]['raw']['value'];
@@ -173,8 +174,22 @@ function template_preprocess_views_view_pivot_table(&$vars) {
           $value = $view->result[$num]->{$full_field_name};
         }
       }
-      else {
+      else if (isset($view->result[$num]->{$field})) {
         $value = $view->result[$num]->{$field};
+      }
+      else if (isset($view->result[$num]->{$full_field_alias})) {
+        if (is_array($view->result[$num]->{$full_field_alias})) {
+          $value = $view->result[$num]->{$full_field_alias}[0]['raw']['value'];
+        }
+        else {
+          $value = $view->result[$num]->{$full_field_alias};
+        }
+      }
+      else if (isset($view->result[$num]->{$full_field_alias})) {
+        $value = $view->result[$num]->{$full_field_alias};
+      }
+      else {
+        $value = 0;
       }
 
       if (!empty($options['info'][$field]['pivot_row_aggregate'])) {
@@ -438,6 +453,16 @@ function _views_pivot_add_field_to_row(&$vars, $options, $renders, $fields, $num
 
     // Don't bother with separators and stuff if the field does not show up.
     if (empty($field_output) && !empty($vars['rows'][$row_key][$column_key])) {
+      return;
+    }
+
+    // Let's see if we have an aggregated field
+    $pivot_agg_mode = (strpos($column_key, 'agg:') === 0 || strpos($row_key, 'agg:') === 0);
+    if (!$pivot_agg_mode && $append && !empty($field_handler->options['group_type']) && $field_handler->options['group_type'] == 'count') {
+      if (empty($vars['rows'][$row_key][$column_key])) {
+        $vars['rows'][$row_key][$column_key] = 0;
+      }
+      $vars['rows'][$row_key][$column_key]++;
       return;
     }
 
