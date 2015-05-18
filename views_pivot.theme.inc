@@ -194,6 +194,7 @@ function template_preprocess_views_view_pivot_table(&$vars) {
 
       if (!empty($options['info'][$field]['pivot_row_aggregate'])) {
         $aggregates['row'][$row_key][$field][] = $value;
+        $aggregates['overall'][$field][] = $value;
       }
       if (!empty($options['info'][$field]['pivot_col_aggregate'])) {
         $aggregates['col'][$column_key][] = $value;
@@ -226,6 +227,13 @@ function template_preprocess_views_view_pivot_table(&$vars) {
 
       $renders[$row_key][$field] = _views_pivot_format_aggregate_field($view, $fields, $field, $values, $options['info'][$field]['pivot_col_aggregate']);
       _views_pivot_add_field_to_row($vars, $options, $renders, $fields, $row_key, $row_key, $field, $column_key, '');
+    }
+  }
+  if (!empty($aggregates['overall'])) {
+    foreach ($aggregates['overall'] as $field => $values) {
+      $agg_key = 'agg:' . $field;
+      $renders[$agg_key][$field] = _views_pivot_format_aggregate_field($view, $fields, $field, $values, $options['info'][$field]['pivot_col_aggregate']);
+      _views_pivot_add_field_to_row($vars, $options, $renders, $fields, $agg_key, $agg_key, $field, $agg_key, '');
     }
   }
 
