@@ -6,7 +6,8 @@
  * @param $vars
  */
 function template_preprocess_views_view_pivot_table(&$vars) {
-  $view     = $vars['view'];
+  $view = $vars['view'];
+  $fields_info = field_info_fields();
 
   // We need the raw data for this grouping, which is passed in as $vars['rows'].
   // However, the template also needs to use for the rendered fields.  We
@@ -165,6 +166,9 @@ function template_preprocess_views_view_pivot_table(&$vars) {
 
       // Handle the Pivot aggregates
       $full_field_name = 'field_' . $field;
+      if (isset($fields_info[$field]['bundles']['field_collection_item'])) {
+        $full_field_name = $field;
+      }
       $full_field_alias = isset($field_handler->field_alias) ? $field_handler->field_alias : FALSE;
       if (isset($view->result[$num]->{$full_field_name})) {
         if (is_array($view->result[$num]->{$full_field_name})) {
