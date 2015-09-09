@@ -171,7 +171,7 @@ function template_preprocess_views_view_pivot_table(&$vars) {
       }
       $full_field_alias = isset($field_handler->field_alias) ? $field_handler->field_alias : FALSE;
       if (isset($view->result[$num]->{$full_field_name})) {
-        if (is_array($view->result[$num]->{$full_field_name})) {
+        if (is_array($view->result[$num]->{$full_field_name}) && isset($view->result[$num]->{$full_field_name}[0]['raw'])) {
           $value = $view->result[$num]->{$full_field_name}[0]['raw']['value'];
         }
         else {
@@ -182,7 +182,7 @@ function template_preprocess_views_view_pivot_table(&$vars) {
         $value = $view->result[$num]->{$field};
       }
       else if (isset($view->result[$num]->{$full_field_alias})) {
-        if (is_array($view->result[$num]->{$full_field_alias})) {
+        if (is_array($view->result[$num]->{$full_field_alias}) && isset($view->result[$num]->{$full_field_alias}[0]['raw'])) {
           $value = $view->result[$num]->{$full_field_alias}[0]['raw']['value'];
         }
         else {
