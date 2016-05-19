@@ -387,6 +387,15 @@ function _views_pivot_format_aggregate_field($view, $fields, $field, $values, $m
   }
 
   $aggregate->{$alias} = $value;
+  if (method_exists($field_handler, 'get_value')) {
+    $entity = $field_handler->get_value($aggregate, 'entity');
+    if (!empty($entity) && !empty($aggregate->_field_data[$field_handler->field_alias]['entity_type'])) {
+      $entity_type = $aggregate->_field_data[$field_handler->field_alias]['entity_type'];
+      $langcode = $field_handler->field_language($entity_type, $entity);
+      $entity->{$field}[$langcode][0]['value'] = $value;
+      $aggregate->_field_data[$field_handler->field_alias]['entity'] = $entity;
+    }
+  }
 
   if (method_exists($field_handler, 'set_items')) {
     $rendered = $field_handler->set_items($aggregate, 0);
