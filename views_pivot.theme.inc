@@ -387,6 +387,13 @@ function _views_pivot_format_aggregate_field($view, $fields, $field, $values, $m
   }
 
   $aggregate->{$alias} = $value;
+
+  // In $field_handler->render($aggregate), the value rendered is
+  // $field_handler->field_alias which is not always the same as $field_handler->real_field
+  // Not sure whether we should change the determination of $alias
+  // For now, set both
+  $aggregate->{$field_handler->field_alias} = $value;
+
   if (method_exists($field_handler, 'get_value')) {
     $entity = $field_handler->get_value($aggregate, 'entity');
     if (!empty($entity) && !empty($aggregate->_field_data[$field_handler->field_alias]['entity_type'])) {
