@@ -27,12 +27,12 @@
     <thead>
     <tr>
       <?php foreach ($pivot_rows as $field => $label): ?>
-        <th <?php if (!empty($header_classes[$field])) { print 'class="'. $header_classes[$field] . '" '; } if (!empty($header_attributes[$field])) { print drupal_attributes($header_attributes[$field]);} ?>>
+        <th <?php if (!empty($header_classes[$field])) { print 'class="'. $header_classes[$field] . '" '; } if (!empty($header_attributes[$field])) { print backdrop_attributes($header_attributes[$field]);} ?>>
           <?php print $label; ?>
         </th>
       <?php endforeach; ?>
       <?php foreach ($header as $field => $label): ?>
-        <th <?php if (!empty($header_classes[$field])) { print 'class="'. $header_classes[$field] . '" '; } if (!empty($header_attributes[$field])) { print drupal_attributes($header_attributes[$field]);} ?>>
+        <th <?php if (!empty($header_classes[$field])) { print 'class="'. $header_classes[$field] . '" '; } if (!empty($header_attributes[$field])) { print backdrop_attributes($header_attributes[$field]);} ?>>
           <?php print $label; ?>
         </th>
       <?php endforeach; ?>
@@ -42,7 +42,7 @@
         <?php foreach ($subheader as $field => $label): ?>
           <tr>
             <?php foreach ($header as $headerfield => $headerlabel): ?>
-              <th <?php if (!empty($header_classes[$field])) { print 'class="'. $header_classes[$field] . '" '; } if (!empty($header_attributes[$field])) { print drupal_attributes($header_attributes[$field]);} ?>>
+              <th <?php if (!empty($header_classes[$field])) { print 'class="'. $header_classes[$field] . '" '; } if (!empty($header_attributes[$field])) { print backdrop_attributes($header_attributes[$field]);} ?>>
                 <?php print $label; ?>
               </th>
             <?php endforeach; ?>
@@ -52,7 +52,7 @@
         <tr>
           <?php foreach ($header as $field => $label): ?>
             <?php foreach ($subheader as $field => $label): ?>
-              <th <?php if (!empty($header_classes[$field])) { print 'class="'. $header_classes[$field] . '" '; } if (!empty($header_attributes[$field])) { print drupal_attributes($header_attributes[$field]);} ?>>
+              <th <?php if (!empty($header_classes[$field])) { print 'class="'. $header_classes[$field] . '" '; } if (!empty($header_attributes[$field])) { print backdrop_attributes($header_attributes[$field]);} ?>>
                 <?php print $label; ?>
               </th>
             <?php endforeach; ?>
@@ -66,7 +66,7 @@
   <?php foreach ($rows as $row_key => $row): ?>
   <tr <?php if (!empty($row_classes[$row_key])) { print 'class="' . implode(' ', $row_classes[$row_key]) .'"';  } ?>>
     <?php foreach ($pivot_rows as $hkey => $label): ?>
-      <td <?php if (!empty($row_attributes[$row_key])) { print drupal_attributes($row_attributes[$row_key]);} ?>>
+      <td <?php if (!empty($row_attributes[$row_key])) { print backdrop_attributes($row_attributes[$row_key]);} ?>>
         <?php print empty($row[$hkey]) ? '' : $row[$hkey]; ?>
       </td>
     <?php endforeach; ?>
@@ -74,7 +74,7 @@
       <?php foreach ($subheader as $shkey => $label): ?>
         <?php foreach ($header as $hkey => $label): ?>
           <?php $key = $shkey . ':' . $hkey; ?>
-          <td <?php if (!empty($field_classes[$shkey][$row_key])) { print 'class="'. $field_classes[$shkey][$row_key] . '" '; } if (!empty($field_attributes[$shkey][$row_key])) { print drupal_attributes($field_attributes[$shkey][$row_key]);} ?>>
+          <td <?php if (!empty($field_classes[$shkey][$row_key])) { print 'class="'. $field_classes[$shkey][$row_key] . '" '; } if (!empty($field_attributes[$shkey][$row_key])) { print backdrop_attributes($field_attributes[$shkey][$row_key]);} ?>>
             <?php print empty($row[$key]) ? '' : $row[$key]; ?>
           </td>
         <?php endforeach; ?>
@@ -87,7 +87,7 @@
         <?php else : ?>
           <?php foreach ($subheader as $shkey => $label): ?>
             <?php $key = $shkey . ':' . $hkey; ?>
-            <td <?php if (!empty($field_classes[$shkey][$row_key])) { print 'class="'. $field_classes[$shkey][$row_key] . '" '; } if (!empty($field_attributes[$shkey][$row_key])) { print drupal_attributes($field_attributes[$shkey][$row_key]);} ?>>
+            <td <?php if (!empty($field_classes[$shkey][$row_key])) { print 'class="'. $field_classes[$shkey][$row_key] . '" '; } if (!empty($field_attributes[$shkey][$row_key])) { print backdrop_attributes($field_attributes[$shkey][$row_key]);} ?>>
               <?php print empty($row[$key]) ? '' : $row[$key]; ?>
             </td>
           <?php endforeach; ?>
