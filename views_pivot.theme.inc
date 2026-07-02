@@ -284,7 +284,7 @@ function template_preprocess_views_view_pivot_table(&$vars) {
 
 
   if (!empty($options['sticky'])) {
-    backdrop_add_js('misc/tableheader.js');
+    backdrop_add_js('core/misc/tableheader.js');
     $vars['classes_array'][] = "sticky-enabled";
   }
   $vars['classes_array'][] = 'cols-' . count($vars['header']);
