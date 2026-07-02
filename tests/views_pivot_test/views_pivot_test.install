@@ -11,10 +11,10 @@
 function views_pivot_test_install() {
   // Favourite colour field on pivot nodes.
   $field = array(
-    'field_name'  => 'field_test_pivot_colour',
+    'field_name' => 'field_test_pivot_colour',
     'cardinality' => 1,
-    'type'        => 'list_text',
-    'settings'    => array(
+    'type' => 'list_text',
+    'settings' => array(
       'allowed_values' => array(
         'red' => 'Red',
         'blue' => 'Blue',
@@ -25,12 +25,12 @@ function views_pivot_test_install() {
   field_create_field($field);
 
   $instance = array(
-    'field_name'  => 'field_test_pivot_colour',
+    'field_name' => 'field_test_pivot_colour',
     'entity_type' => 'node',
-    'bundle'      => 'pivot',
-    'label'       => 'Colour',
-    'widget'      => array(
-      'type'      => 'options_buttons',
+    'bundle' => 'pivot',
+    'label' => 'Colour',
+    'widget' => array(
+      'type' => 'options_buttons',
     ),
     'display' => array(
       'default' => array(

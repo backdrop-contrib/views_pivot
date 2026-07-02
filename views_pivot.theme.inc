@@ -67,7 +67,7 @@ function template_preprocess_views_view_pivot_table(&$vars) {
     $field_handler = $fields[$field];
     // Create a second variable so we can easily find what fields we have and what the
     // CSS classes should be.
-    $vars['fields'][$field] = drupal_clean_css_identifier($field);
+    $vars['fields'][$field] = backdrop_clean_css_identifier($field);
     if ($active == $field) {
       $vars['fields'][$field] .= ' active';
     }
@@ -129,7 +129,7 @@ function template_preprocess_views_view_pivot_table(&$vars) {
       }
       // Add a CSS align class to each field if one was set
       if (!empty($options['info'][$field]['align'])) {
-        $vars['header_classes'][$field] .= ' ' . drupal_clean_css_identifier($options['info'][$field]['align']);
+        $vars['header_classes'][$field] .= ' ' . backdrop_clean_css_identifier($options['info'][$field]['align']);
       }
 
       // Add a header label wrapper if one was selected.
@@ -144,7 +144,7 @@ function template_preprocess_views_view_pivot_table(&$vars) {
 
     // Add a CSS align class to each field if one was set
     if (!empty($options['info'][$field]['align'])) {
-      $vars['fields'][$field] .= ' ' . drupal_clean_css_identifier($options['info'][$field]['align']);
+      $vars['fields'][$field] .= ' ' . backdrop_clean_css_identifier($options['info'][$field]['align']);
     }
     if ($field == $pivot_row) {
       continue;
@@ -284,10 +284,10 @@ function template_preprocess_views_view_pivot_table(&$vars) {
 
 
   if (!empty($options['sticky'])) {
-    drupal_add_js('misc/tableheader.js');
+    backdrop_add_js('misc/tableheader.js');
     $vars['classes_array'][] = "sticky-enabled";
   }
-  $vars['classes_array'][] = 'cols-'. count($vars['header']);
+  $vars['classes_array'][] = 'cols-' . count($vars['header']);
 
   if (!empty($handler->options['summary'])) {
     $vars['attributes_array'] = array('summary' => $handler->options['summary']);
@@ -343,7 +343,7 @@ function _views_pivot_format_aggregate_field($view, $fields, $field, $values, $m
         // Do not count empty or non-numeric cells.
         // Strip out any spaces and thousand makers.
         $stripped = str_replace(array(' ', ','), '', $value);
-        $value = preg_match('/[-+]?\d*\.?\d+/', $stripped, $matches) ? (double)$matches[0] : FALSE;
+        $value = preg_match('/[-+]?\d*\.?\d+/', $stripped, $matches) ? (double) $matches[0] : FALSE;
         if ($value !== FALSE) {
           $sum += $value;
           $count++;
@@ -521,7 +521,7 @@ function _views_pivot_add_field_to_row(&$vars, $options, $renders, $fields, $num
 function theme_views_ui_style_plugin_pivot($variables) {
   $form = $variables['form'];
 
-  $output = drupal_render($form['description_markup']);
+  $output = backdrop_render($form['description_markup']);
 
   $header = array(
     t('Field'),
@@ -568,41 +568,41 @@ function theme_views_ui_style_plugin_pivot($variables) {
   $rows = array();
   foreach (element_children($form['columns']) as $id) {
     $row = array();
-    $row[] = drupal_render($form['info'][$id]['name']);
-    $row[] = drupal_render($form['columns'][$id]);
-    $row[] = drupal_render($form['info'][$id]['align']);
-    $row[] = drupal_render($form['info'][$id]['separator']);
+    $row[] = backdrop_render($form['info'][$id]['name']);
+    $row[] = backdrop_render($form['columns'][$id]);
+    $row[] = backdrop_render($form['info'][$id]['align']);
+    $row[] = backdrop_render($form['info'][$id]['separator']);
     $row[] = array(
-      'data' => drupal_render($form['info'][$id]['pivot_row']),
+      'data' => backdrop_render($form['info'][$id]['pivot_row']),
       'align' => 'center',
     );
     $row[] = array(
-      'data' => drupal_render($form['info'][$id]['pivot_row_extra']),
+      'data' => backdrop_render($form['info'][$id]['pivot_row_extra']),
       'align' => 'center',
     );
     $row[] = array(
-      'data' => drupal_render($form['info'][$id]['pivot_col']),
+      'data' => backdrop_render($form['info'][$id]['pivot_col']),
       'align' => 'center',
     );
     $row[] = array(
-      'data' => drupal_render($form['info'][$id]['pivot_col_aggregate']) . drupal_render($form['info'][$id]['pivot_col_aggregate_label']),
+      'data' => backdrop_render($form['info'][$id]['pivot_col_aggregate']) . backdrop_render($form['info'][$id]['pivot_col_aggregate_label']),
       'align' => 'center',
     );
     $row[] = array(
-      'data' => drupal_render($form['info'][$id]['pivot_row_aggregate']) . drupal_render($form['info'][$id]['pivot_row_aggregate_label']),
+      'data' => backdrop_render($form['info'][$id]['pivot_row_aggregate']) . backdrop_render($form['info'][$id]['pivot_row_aggregate_label']),
       'align' => 'center',
     );
     if (!empty($form['info'][$id]['sortable'])) {
       $row[] = array(
-        'data' => drupal_render($form['info'][$id]['sortable']),
+        'data' => backdrop_render($form['info'][$id]['sortable']),
         'align' => 'center',
       );
       $row[] = array(
-        'data' => drupal_render($form['info'][$id]['default_sort_order']),
+        'data' => backdrop_render($form['info'][$id]['default_sort_order']),
         'align' => 'center',
       );
       $row[] = array(
-        'data' => drupal_render($form['default'][$id]),
+        'data' => backdrop_render($form['default'][$id]),
         'align' => 'center',
       );
     }
@@ -612,16 +612,19 @@ function theme_views_ui_style_plugin_pivot($variables) {
       $row[] = '';
     }
     $row[] = array(
-      'data' => drupal_render($form['info'][$id]['empty_column']),
+      'data' => backdrop_render($form['info'][$id]['empty_column']),
       'align' => 'center',
     );
     $rows[] = $row;
   }
 
   // Add the special 'None' row.
-  $rows[] = array(t('None'), '', '', '', '', '', '', '', '', '', '', array('align' => 'center', 'data' => drupal_render($form['default'][-1])), '');
+  $rows[] = array(t('None'), '', '', '', '', '', '', '', '', '', '', array(
+      'align' => 'center',
+      'data' => backdrop_render($form['default'][-1]),
+    ), '');
 
   $output .= theme('table', array('header' => $header, 'rows' => $rows));
-  $output .= drupal_render_children($form);
+  $output .= backdrop_render_children($form);
   return $output;
 }

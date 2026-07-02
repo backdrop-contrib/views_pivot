@@ -55,7 +55,7 @@ class views_plugin_style_pivot extends views_plugin_style_table {
       // the $id of the column for dependency checking.
       $id = 'edit-style-options-columns-' . $safe;
 
-      $radio_id = drupal_html_id('edit-pivot-row-' . $field);
+      $radio_id = backdrop_html_id('edit-pivot-row-' . $field);
       $form['info'][$field]['pivot_row'] = array(
         '#type' => 'radio',
         '#return_value' => $field,
@@ -71,7 +71,7 @@ class views_plugin_style_pivot extends views_plugin_style_table {
         '#default_value' => !empty($this->options['info'][$field]['pivot_row_extra']),
         '#dependency' => array($id => array($field)),
       );
-      $radio_id = drupal_html_id('edit-pivot-col-' . $field);
+      $radio_id = backdrop_html_id('edit-pivot-col-' . $field);
       $form['info'][$field]['pivot_col'] = array(
         '#type' => 'radio',
         '#return_value' => $field,

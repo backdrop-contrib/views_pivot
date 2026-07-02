@@ -20,3 +20,12 @@ function views_pivot_theme() {
     ),
   );
 }
+
+/**
+ * Implements hook_autoload_info().
+ */
+function views_pivot_autoload_info() {
+  return array(
+    'views_plugin_style_pivot' => 'views_plugin_style_pivot.inc',
+  );
+}

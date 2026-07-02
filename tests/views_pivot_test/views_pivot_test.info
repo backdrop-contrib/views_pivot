@@ -1,7 +1,9 @@
 name = Views Pivot Test Data
 description = Provides testing for Views Pivot
-core = 7.x
+backdrop = 1.x
+type = module
 dependencies[] = views_pivot
 dependencies[] = views_ui
 dependencies[] = text
 dependencies[] = list
+

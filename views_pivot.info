@@ -2,6 +2,6 @@ name = Pivot Tables for Views
 description = Allows to output the result of a view as a pivot table.
 dependencies[] = views
 package = Views
-core = 7.x
+backdrop = 1.x
+type = module
 
-files[] = views_plugin_style_pivot.inc

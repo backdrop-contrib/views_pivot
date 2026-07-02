@@ -17,7 +17,7 @@ function views_pivot_test_node_info() {
       'name' => t('Pivot data'),
       'base' => 'pivot',
       'description' => t('Test node type for Views Pivot module.'),
-    )
+    ),
   );
 }
 
@@ -27,7 +27,7 @@ function views_pivot_test_node_info() {
 function views_pivot_test_views_api() {
   return array(
     'api' => 3,
-    'path' => drupal_get_path('module', 'example') . '/includes/views',
-    'template path' => drupal_get_path('module', 'example') . '/themes',
+    'path' => backdrop_get_path('module', 'example') . '/includes/views',
+    'template path' => backdrop_get_path('module', 'example') . '/themes',
   );
 }
